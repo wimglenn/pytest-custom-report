@@ -10,7 +10,7 @@ def test_pass_custom_symbol(testdir, one_test_passing):
         'test_pass_custom_symbol.py 👍 *',
     ])
     assert result.ret == 0
-    result.assert_outcomes(passed=1, skipped=0, failed=0, error=0)
+    result.assert_outcomes(passed=1)
 
 
 def test_pass_custom_symbol_verbose(testdir, one_test_passing):
@@ -19,7 +19,7 @@ def test_pass_custom_symbol_verbose(testdir, one_test_passing):
         'test_pass_custom_symbol_verbose.py::test_passing OHYEAH *',
     ])
     assert result.ret == 0
-    result.assert_outcomes(passed=1, skipped=0, failed=0, error=0)
+    result.assert_outcomes(passed=1)
 
 
 def test_fail_custom_symbol(testdir, two_tests_failing):
@@ -28,7 +28,7 @@ def test_fail_custom_symbol(testdir, two_tests_failing):
         'test_fail_custom_symbol.py 💩💩 *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=0, skipped=0, failed=2, error=0)
+    result.assert_outcomes(failed=2)
 
 
 def test_fail_custom_symbol_verbose(testdir, two_tests_failing):
@@ -38,7 +38,7 @@ def test_fail_custom_symbol_verbose(testdir, two_tests_failing):
         'test_fail_custom_symbol_verbose.py::test_raises OHCRAP *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=0, skipped=0, failed=2, error=0)
+    result.assert_outcomes(failed=2)
 
 
 def test_skip_custom_symbol(testdir, bunch_of_skipped_tests):
@@ -47,7 +47,7 @@ def test_skip_custom_symbol(testdir, bunch_of_skipped_tests):
         'test_skip_custom_symbol.py ????.??? *',
     ])
     assert result.ret == 0
-    result.assert_outcomes(passed=1, skipped=7, failed=0, error=0)
+    result.assert_outcomes(passed=1, skipped=7)
 
 
 def test_skip_custom_symbol_verbose(testdir, bunch_of_skipped_tests):
@@ -63,7 +63,7 @@ def test_skip_custom_symbol_verbose(testdir, bunch_of_skipped_tests):
         'test_skip_custom_symbol_verbose.py::test_skipped_within_test WHATEVS *',
     ])
     assert result.ret == 0
-    result.assert_outcomes(passed=1, skipped=7, failed=0, error=0)
+    result.assert_outcomes(passed=1, skipped=7)
 
 
 def test_error_in_setup_and_teardown(testdir, errors_in_setup_and_teardown):
@@ -72,7 +72,7 @@ def test_error_in_setup_and_teardown(testdir, errors_in_setup_and_teardown):
         'test_error_in_setup_and_teardown.py !.!! *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=1, skipped=0, failed=0, error=3)
+    result.assert_outcomes(passed=1, error=3)
 
 
 def test_error_in_setup_and_teardown_verbose(testdir, errors_in_setup_and_teardown):
@@ -84,7 +84,7 @@ def test_error_in_setup_and_teardown_verbose(testdir, errors_in_setup_and_teardo
         'test_error_in_setup_and_teardown_verbose.py::test_errors_in_setup_and_teardown UHOH *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=1, skipped=0, failed=0, error=3)
+    result.assert_outcomes(passed=1, error=3)
 
 
 def test_xfail(testdir, xfail_tests):
@@ -97,19 +97,18 @@ def test_xfail(testdir, xfail_tests):
         'test_xfail.py P✗f✗✗✗ *',
     ])
     assert result.ret == 1
-    # TODO: PR for xfail/xpass support in assert_outcomes
-    result.assert_outcomes(passed=0, skipped=0, failed=1, error=0)
+    result.assert_outcomes(xpassed=1, failed=1, xfailed=4)
 
 
 def test_xfail_verbose(testdir, xfail_tests):
     result = testdir.runpytest(
         '--report-failed-verbose=WTF',
         '--report-xfailed-verbose=SHRUGS',
-        '--report-xpassed-verbose=¯\_(ツ)_/¯',
+        r'--report-xpassed-verbose=¯\_(ツ)_/¯',
         '-v',
     )
     result.stdout.fnmatch_lines([
-        'test_xfail_verbose.py::test_expected_fail_but_passes ¯\_(ツ)_/¯ *',
+        r'test_xfail_verbose.py::test_expected_fail_but_passes ¯\_(ツ)_/¯ *',
         'test_xfail_verbose.py::test_expected_fail_and_fails SHRUGS *',
         'test_xfail_verbose.py::test_expected_fail_but_passes_strict WTF *',
         'test_xfail_verbose.py::test_expected_fail_and_fails_strict SHRUGS *',
@@ -117,7 +116,7 @@ def test_xfail_verbose(testdir, xfail_tests):
         'test_xfail_verbose.py::test_error_in_teardown_and_expected_fail_mark SHRUGS *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=0, skipped=0, failed=1, error=0)
+    result.assert_outcomes(xpassed=1, failed=1, xfailed=4)
 
 
 def test_report_symbols_parsed_from_ini_file(testdir, symbols_in_inifile, one_of_each_result_type):
@@ -125,7 +124,7 @@ def test_report_symbols_parsed_from_ini_file(testdir, symbols_in_inifile, one_of
     result.stdout.fnmatch_lines([
         'test_report_symbols_parsed_from_ini_file.py ✔🦄✗!?🔥  *',
     ])
-    result.assert_outcomes(passed=1, skipped=1, failed=1, error=1)
+    result.assert_outcomes(passed=1, skipped=1, failed=1, error=1, xfailed=1, xpassed=1)
 
 
 def test_report_symbols_parsed_from_ini_file_verbose(testdir, symbols_in_inifile, one_of_each_result_type):
@@ -138,7 +137,7 @@ def test_report_symbols_parsed_from_ini_file_verbose(testdir, symbols_in_inifile
         "test_report_symbols_parsed_from_ini_file_verbose.py::test_skipped DON'T CARE [ 83%]",
         'test_report_symbols_parsed_from_ini_file_verbose.py::test_error YOU MEDDLING KIDS! [100%]',
     ])
-    result.assert_outcomes(passed=1, skipped=1, failed=1, error=1)
+    result.assert_outcomes(passed=1, skipped=1, failed=1, error=1, xfailed=1, xpassed=1)
     outcomes = result.parseoutcomes()
     outcomes.pop("seconds")  # why is this in here?
     assert outcomes == {"passed": 1, "skipped": 1, "failed": 1, "xpassed": 1, "xfailed": 1, "error": 1}
