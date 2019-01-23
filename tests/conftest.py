@@ -162,7 +162,7 @@ def one_of_each_result_type(errors_in_setup_and_teardown_conftest, testdir):
 
         @pytest.mark.xfail
         def test_xfailed():
-            assert False        
+            assert False
 
         def test_skipped():
             pytest.skip()
