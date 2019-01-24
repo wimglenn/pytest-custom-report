@@ -11,7 +11,7 @@ symbol to use when a test is skipped, e.g. by @pytest.skip decorator (default {s
 symbol to use when a test encounters an exception during setup or teardown (default {error})
 """
 help = dict(zip(names, help.strip().format(**defaults).splitlines()))
-defaults_verbose = "PASSED XPASS FAILED xfail SKIPPED ERROR".split()
+defaults_verbose = "PASSED XPASS FAILED XFAIL SKIPPED ERROR".split()
 msg_verbose = "as above, when '--verbose' is enabled (default {})"
 help_verbose = [msg_verbose.format(v) for v in defaults_verbose]
 defaults_verbose = dict(zip(names, defaults_verbose))
@@ -31,7 +31,7 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     # this is called once after command line args have been parsed
 
-    def get(name, color=None):
+    def get(name):
         # returns a 3-tuple of short and verbose strings, along with the test outcome string
         # the command line arguments, if specified, take precedence over config file settings
         if name not in names:
@@ -42,8 +42,6 @@ def pytest_configure(config):
         long = config.getoption("report_" + name + "_verbose", None)
         if long is None:
             long = config.getini("report_" + name + "_verbose")
-        if color is not None:
-            long = long, {color: True}
         return name, short, long
 
     symbols.update({
@@ -54,7 +52,7 @@ def pytest_configure(config):
         (False, "skipped", "call"):     get("skipped"),
         (False, "passed",  "call"):     get("passed"),
         (False, "failed",  "call"):     get("failed"),
-        (True,  "passed",  "call"):     get("xpassed", color="yellow"),
+        (True,  "passed",  "call"):     get("xpassed"),
         (True,  "skipped", "setup"):    get("xfailed"),
         (True,  "skipped", "call"):     get("xfailed"),
         (True,  "skipped", "teardown"): get("xfailed"),

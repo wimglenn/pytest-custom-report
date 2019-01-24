@@ -151,10 +151,10 @@ def test_default_symbols():
         (False, 'passed',  'call'):     ('passed',  '.', 'PASSED'),
         (False, 'skipped', 'call'):     ('skipped', 's', 'SKIPPED'),
         (False, 'skipped', 'setup'):    ('skipped', 's', 'SKIPPED'),
-        (True,  'passed',  'call'):     ('xpassed', 'X', ('XPASS', {'yellow': True})),
-        (True,  'skipped', 'call'):     ('xfailed', 'x', 'xfail'),
-        (True,  'skipped', 'setup'):    ('xfailed', 'x', 'xfail'),
-        (True,  'skipped', 'teardown'): ('xfailed', 'x', 'xfail'),
+        (True,  'passed',  'call'):     ('xpassed', 'X', 'XPASS'),
+        (True,  'skipped', 'call'):     ('xfailed', 'x', 'XFAIL'),
+        (True,  'skipped', 'setup'):    ('xfailed', 'x', 'XFAIL'),
+        (True,  'skipped', 'teardown'): ('xfailed', 'x', 'XFAIL'),
     }
 
 
@@ -179,7 +179,7 @@ custom-report:
                         symbol to use when a test fails, but it is marked as
                         an expected failure (default x)
   --report-xfailed-verbose=REPORT_XFAILED_VERBOSE
-                        as above, when '--verbose' is enabled (default xfail)
+                        as above, when '--verbose' is enabled (default XFAIL)
   --report-skipped=REPORT_SKIPPED
                         symbol to use when a test is skipped, e.g. by
                         @pytest.skip decorator (default s)
