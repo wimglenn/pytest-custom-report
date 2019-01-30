@@ -75,7 +75,7 @@ test outcome    command-line argument name    .ini file config key        defaul
 ``passed``      ``--report-passed-verbose``   ``report_passed_verbose``   ``PASSED``
 ``xpassed``     ``--report-xpassed-verbose``  ``report_xpassed_verbose``  ``XPASS``
 ``failed``      ``--report-failed-verbose``   ``report_failed_verbose``   ``FAILED``
-``xfailed``     ``--report-xfailed-verbose``  ``report_xfailed_verbose``  ``xfail``
+``xfailed``     ``--report-xfailed-verbose``  ``report_xfailed_verbose``  ``XFAIL``
 ``skipped``     ``--report-skipped-verbose``  ``report_skipped_verbose``  ``SKIPPED``
 ``error``       ``--report-error-verbose``    ``report_error_verbose``    ``ERROR``
 ==============  ============================  ==========================  =======================

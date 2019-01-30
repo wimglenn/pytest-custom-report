@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="pytest-custom-report",
-    version="1.0.0",
+    version="1.0.1",
     url="https://github.com/wimglenn/pytest-custom-report",
     description="Configure the symbols displayed for test outcomes",
     long_description=open("README.rst").read(),
