@@ -72,7 +72,7 @@ def test_error_in_setup_and_teardown(testdir, errors_in_setup_and_teardown):
         'test_error_in_setup_and_teardown.py !.!! *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=1, error=3)
+    result.assert_outcomes(passed=1, errors=3)
 
 
 def test_error_in_setup_and_teardown_verbose(testdir, errors_in_setup_and_teardown):
@@ -84,7 +84,7 @@ def test_error_in_setup_and_teardown_verbose(testdir, errors_in_setup_and_teardo
         'test_error_in_setup_and_teardown_verbose.py::test_errors_in_setup_and_teardown UHOH *',
     ])
     assert result.ret == 1
-    result.assert_outcomes(passed=1, error=3)
+    result.assert_outcomes(passed=1, errors=3)
 
 
 def test_xfail(testdir, xfail_tests):
@@ -124,7 +124,7 @@ def test_report_symbols_parsed_from_ini_file(testdir, symbols_in_inifile, one_of
     result.stdout.fnmatch_lines([
         'test_report_symbols_parsed_from_ini_file.py ✔🦄✗!?🔥  *',
     ])
-    result.assert_outcomes(passed=1, skipped=1, failed=1, error=1, xfailed=1, xpassed=1)
+    result.assert_outcomes(passed=1, skipped=1, failed=1, errors=1, xfailed=1, xpassed=1)
 
 
 def test_report_symbols_parsed_from_ini_file_verbose(testdir, symbols_in_inifile, one_of_each_result_type):
@@ -137,10 +137,9 @@ def test_report_symbols_parsed_from_ini_file_verbose(testdir, symbols_in_inifile
         "test_report_symbols_parsed_from_ini_file_verbose.py::test_skipped DON'T CARE [ 83%]",
         'test_report_symbols_parsed_from_ini_file_verbose.py::test_error YOU MEDDLING KIDS! [100%]',
     ])
-    result.assert_outcomes(passed=1, skipped=1, failed=1, error=1, xfailed=1, xpassed=1)
+    result.assert_outcomes(passed=1, skipped=1, failed=1, errors=1, xfailed=1, xpassed=1)
     outcomes = result.parseoutcomes()
-    outcomes.pop("seconds")  # why is this in here?
-    assert outcomes == {"passed": 1, "skipped": 1, "failed": 1, "xpassed": 1, "xfailed": 1, "error": 1}
+    assert outcomes == {"passed": 1, "skipped": 1, "failed": 1, "xpassed": 1, "xfailed": 1, "errors": 1}
 
 
 def test_default_symbols():
@@ -160,59 +159,40 @@ def test_default_symbols():
 
 expected_cli_options = '''\
 custom-report:
-  --report-passed=REPORT_PASSED
-                        symbol to use in the report when a test has passed
-                        (default .)
-  --report-passed-verbose=REPORT_PASSED_VERBOSE
-                        as above, when '--verbose' is enabled (default PASSED)
-  --report-xpassed=REPORT_XPASSED
-                        symbol to use when a test is marked as an expected
-                        failure, but it doesn't fail (default X)
-  --report-xpassed-verbose=REPORT_XPASSED_VERBOSE
-                        as above, when '--verbose' is enabled (default XPASS)
-  --report-failed=REPORT_FAILED
-                        symbol to use when a test fails, either by assertion
-                        or an unhandled exception (default F)
-  --report-failed-verbose=REPORT_FAILED_VERBOSE
-                        as above, when '--verbose' is enabled (default FAILED)
-  --report-xfailed=REPORT_XFAILED
-                        symbol to use when a test fails, but it is marked as
-                        an expected failure (default x)
-  --report-xfailed-verbose=REPORT_XFAILED_VERBOSE
-                        as above, when '--verbose' is enabled (default XFAIL)
-  --report-skipped=REPORT_SKIPPED
-                        symbol to use when a test is skipped, e.g. by
-                        @pytest.skip decorator (default s)
-  --report-skipped-verbose=REPORT_SKIPPED_VERBOSE
-                        as above, when '--verbose' is enabled (default
-                        SKIPPED)
-  --report-error=REPORT_ERROR
-                        symbol to use when a test encounters an exception
-                        during setup or teardown (default E)
-  --report-error-verbose=REPORT_ERROR_VERBOSE
-                        as above, when '--verbose' is enabled (default ERROR)
-'''
+  --report-passed=*
+  --report-passed-verbose=*
+  --report-xpassed=*
+  --report-xpassed-verbose=*
+  --report-failed=*
+  --report-failed-verbose=*
+  --report-xfailed=*
+  --report-xfailed-verbose=*
+  --report-skipped=*
+  --report-skipped-verbose=*
+  --report-error=*
+  --report-error-verbose=*
+'''.splitlines()
 
 
 expected_ini_options = '''\
-  report_passed (string) *
-  report_passed_verbose (string) *
-  report_xpassed (string) *
-  report_xpassed_verbose (string) *
-  report_failed (string) *
-  report_failed_verbose (string) *
-  report_xfailed (string) *
-  report_xfailed_verbose (string) *
-  report_skipped (string) *
-  report_skipped_verbose (string) *
-  report_error (string) *
-  report_error_verbose (string) *
+  report_passed (string)*
+  report_passed_verbose (string)*
+  report_xpassed (string)*
+  report_xpassed_verbose (string)*
+  report_failed (string)*
+  report_failed_verbose (string)*
+  report_xfailed (string)*
+  report_xfailed_verbose (string)*
+  report_skipped (string)*
+  report_skipped_verbose (string)*
+  report_error (string)*
+  report_error_verbose (string)*
 '''.splitlines()
 
 
 def test_help_text_contains_cli_options(testdir):
     result = testdir.runpytest('--help')
-    assert expected_cli_options in result.stdout.str()
+    result.stdout.fnmatch_lines(expected_cli_options)
 
 
 def test_help_text_contains_ini_options(testdir):
