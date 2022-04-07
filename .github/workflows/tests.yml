@@ -23,7 +23,6 @@ jobs:
       - name: "Install dependencies"
         run: |
           python -VV
-          python -m pip install pytest
-          python -m pip install -e .
+          python -m pip install --editable .
       - name: "Run tests for ${{ matrix.python-version }} on ${{ matrix.os }}"
         run: python -m pytest
