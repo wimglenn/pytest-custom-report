@@ -1,13 +1,16 @@
-|travis|_ |pypi|_ |pyversions|_
-
-.. |travis| image:: https://img.shields.io/travis/wimglenn/pytest-custom-report.svg?branch=master
-.. _travis: https://travis-ci.org/wimglenn/pytest-custom-report
+|pypi|_ |pyversions|_ |actions|_ |womm|_
 
 .. |pypi| image:: https://img.shields.io/pypi/v/pytest-custom-report.svg
 .. _pypi: https://pypi.org/project/pytest-custom-report
 
 .. |pyversions| image:: https://img.shields.io/pypi/pyversions/pytest-custom-report.svg
 .. _pyversions:
+
+.. |actions| image:: https://github.com/wimglenn/pytest-custom-report/actions/workflows/ci.yml/badge.svg
+.. _actions: https://github.com/wimglenn/pytest-custom-report/actions/workflows/ci.yml/
+
+.. |womm| image:: https://cdn.rawgit.com/nikku/works-on-my-machine/v0.2.0/badge.svg
+.. _womm: https://github.com/nikku/works-on-my-machine
 
 
 .. image:: https://user-images.githubusercontent.com/6615374/44383803-a48a7600-a4df-11e8-9ce5-dfd5eca9d208.png
